@@ -27,10 +27,10 @@ public class EjemplarControllerMOCK {
         return ResponseEntity.ok(lista);
     }
 
-    // GET BY ISBN --> SELECT BY ISBN
-    @GetMapping("/GET_{isbn}")
-    public ResponseEntity<Ejemplar> getEjemplar(@PathVariable Integer isbn) {
-        Optional<Ejemplar> ejemplarOpt = repositorioEjemplares.findById(isbn);
+    // GET BY ID --> SELECT BY ID
+    @GetMapping("/GET_{id}")
+    public ResponseEntity<Ejemplar> getEjemplar(@PathVariable Integer id) {
+        Optional<Ejemplar> ejemplarOpt = repositorioEjemplares.findById(id);
         return ejemplarOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -42,11 +42,11 @@ public class EjemplarControllerMOCK {
     }
 
     // PUT --> UPDATE
-    @PutMapping("/PUT_{isbn}")
-    public ResponseEntity<Ejemplar> updateEjemplar(@RequestBody Ejemplar ejemplar, @PathVariable Integer isbn) {
-        Optional<Ejemplar> ejemplarOpt = repositorioEjemplares.findById(isbn);
+    @PutMapping("/PUT_{id}")
+    public ResponseEntity<Ejemplar> updateEjemplar(@RequestBody Ejemplar ejemplar, @PathVariable Integer id) {
+        Optional<Ejemplar> ejemplarOpt = repositorioEjemplares.findById(id);
         if (ejemplarOpt.isPresent()) {
-            ejemplar.setId(isbn); // Asegurarse de que el ISBN no cambie
+            ejemplar.setId(id); // Asegurarse de que el ISBN no cambie
             Ejemplar ejemplarPersistido = repositorioEjemplares.save(ejemplar);
             return ResponseEntity.ok(ejemplarPersistido);
         } else {
@@ -55,10 +55,10 @@ public class EjemplarControllerMOCK {
     }
 
     // DELETE
-    @DeleteMapping("/ejemplarDELETE_{isbn}")
-    public ResponseEntity<String> deleteLibro(@PathVariable Integer isbn) {
-        repositorioEjemplares.deleteById(isbn);
-        String mensaje = "Libro con ISBN: " + isbn + " borrado";
+    @DeleteMapping("/ejemplarDELETE_{id}")
+    public ResponseEntity<String> deleteLibro(@PathVariable Integer id) {
+        repositorioEjemplares.deleteById(id);
+        String mensaje = "Libro con id: " + id + " borrado";
         return ResponseEntity.ok(mensaje);
     }
 }
