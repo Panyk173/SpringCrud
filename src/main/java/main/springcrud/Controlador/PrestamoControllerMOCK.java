@@ -1,6 +1,7 @@
 package main.springcrud.Controlador;
 
 
+import jakarta.validation.Valid;
 import main.springcrud.Modelo.DTOs.Prestamo;
 import main.springcrud.Modelo.Repository.PrestamoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,13 @@ public class PrestamoControllerMOCK {
     public ResponseEntity<Prestamo> getPrestamo(@PathVariable Integer id) {
         Optional<Prestamo> prestamoOpt = repositorioPrestamos.findById(id);
         return prestamoOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // POST --> INSERT
+    @PostMapping("/PrestamoPOST")
+    public ResponseEntity<Prestamo> addPrestamo(@Valid @RequestBody Prestamo prestamo) {
+        Prestamo prestamoPersistido = repositorioPrestamos.save(prestamo);
+        return ResponseEntity.ok(prestamoPersistido);
     }
 
     // PUT --> UPDATE
