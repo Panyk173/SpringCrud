@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import main.springcrud.Modelo.DTOs.Libro;
 import main.springcrud.Modelo.Repository.LibrosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +29,6 @@ public class LibrosControllerMOCK {
 
     // GET BY ISBN --> SELECT BY ISBN
     @GetMapping("/GET_{isbn}")
-    @Cacheable
     public ResponseEntity<Libro> getLibro(@PathVariable String isbn) {
         Optional<Libro> libroOpt = repositorioLibros.findById(isbn);
         return libroOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
