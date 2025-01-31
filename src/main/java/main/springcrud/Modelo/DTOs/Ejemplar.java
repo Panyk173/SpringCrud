@@ -1,6 +1,7 @@
 package main.springcrud.Modelo.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -23,10 +24,10 @@ public class Ejemplar {
     // Relacion con Libro (ya cumple con "no nulo" por @NotNull y la definicion de la columna)
     @NotNull(message = "El ISBN no puede ser nulo")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "isbn", nullable = false)
-    @JsonBackReference
-    private main.springcrud.Modelo.DTOs.Libro isbn;
+    private Libro isbn;
 
     // Validacion para "estado": solo valores permitidos
     @NotNull(message = "El estado no puede ser nulo")
