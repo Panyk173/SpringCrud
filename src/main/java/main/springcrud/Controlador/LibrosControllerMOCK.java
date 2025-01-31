@@ -42,7 +42,7 @@ public class LibrosControllerMOCK {
     }
 
     // PUT --> UPDATE
-    @PutMapping("/PUT_{isbn}")
+    @PutMapping("/UPDATE_{isbn}")
     public ResponseEntity<Libro> updateLibro(@RequestBody Libro libro, @PathVariable String isbn) {
         Optional<Libro> libroOpt = repositorioLibros.findById(isbn);
         if (libroOpt.isPresent()) {
@@ -55,7 +55,7 @@ public class LibrosControllerMOCK {
     }
 
     // DELETE
-    @DeleteMapping("/libroDELETE_{isbn}")
+    @DeleteMapping("/DELETE_{isbn}")
     public ResponseEntity<String> deleteLibro(@PathVariable String isbn) {
         repositorioLibros.deleteById(isbn);
         String mensaje = "Libro con ISBN: " + isbn + " borrado";

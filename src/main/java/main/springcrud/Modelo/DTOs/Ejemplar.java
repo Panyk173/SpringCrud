@@ -1,19 +1,17 @@
 package main.springcrud.Modelo.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "ejemplar")
 public class Ejemplar {
@@ -22,19 +20,25 @@ public class Ejemplar {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotNull
+    // Relacion con Libro (ya cumple con "no nulo" por @NotNull y la definicion de la columna)
+    @NotNull(message = "El ISBN no puede ser nulo")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "isbn", nullable = false)
-    @JsonIgnore
+    @JsonBackReference
     private main.springcrud.Modelo.DTOs.Libro isbn;
 
-    @ColumnDefault("'Disponible'")
+    // Validacion para "estado": solo valores permitidos
+    @NotNull(message = "El estado no puede ser nulo")
+    @Pattern(
+            regexp = "^(disponible|prestado|dañado)$",
+            message = "Estado inválido. Valores permitidos: disponible, prestado, dañado"
+    )
+    @ColumnDefault("'disponible'") // Asegurate de que coincida con el valor en minusculas del regex
     @Lob
     @Column(name = "estado")
     private String estado;
 
     @OneToMany(mappedBy = "ejemplar")
-    private Set<main.springcrud.Modelo.DTOs.Prestamo> prestamos = new LinkedHashSet<>();
-
+    private Set<Prestamo> prestamos = new LinkedHashSet<>();
 }
